@@ -1,62 +1,47 @@
 import axios from "axios"
 
-// URL corrigÃ©e - utilise celle de Render
+// URL dynamique qui fonctionne partout
+const getBaseURL = () => {
+  // Vérifie si on est dans un navigateur
+  if (typeof window !== "undefined") {
+    const host = window.location.hostname
+    
+    // Production sur Vercel
+    if (host.includes("vercel.app") || host.includes("mini-stack-frontend")) {
+      return "https://mini-stackoverflow-backend.onrender.com/api"
+    }
+    
+    // Développement local
+    if (host === "localhost" || host === "127.0.0.1") {
+      return "http://localhost:8000/api"
+    }
+  }
+  
+  // Fallback par défaut (pour Vercel build)
+  return "https://mini-stackoverflow-backend.onrender.com/api"
+}
+
 const api = axios.create({
-  baseURL: process.env.REACT_APP_API_URL,
+  baseURL: getBaseURL(),
   headers: {
     "Content-Type": "application/json",
   },
 })
 
-// CORRECTION CRITIQUE : Ajouter le token Ã  TOUTES les requÃªtes
+// Debug
+console.log("?? API Config - Base URL:", api.defaults.baseURL)
+console.log("?? Hostname:", typeof window !== "undefined" ? window.location.hostname : "server-side")
+
+// Interceptors
 api.interceptors.request.use(
   (config) => {
     const token = localStorage.getItem("token")
-    console.log("Token found for request:", !!token)
     if (token) {
       config.headers.Authorization = `Bearer ${token}`
-      console.log("Authorization header set")
-    } else {
-      console.warn("No token found")
     }
     return config
   },
-  (error) => {
-    console.error("Request interceptor error:", error)
-    return Promise.reject(error)
-  }
-)
-
-// Refresh token - CORRIGEZ l'URL ici aussi !
-api.interceptors.response.use(
-  (response) => response,
-  async (error) => {
-    const originalRequest = error.config
-    
-    if (error.response?.status === 401 && !originalRequest._retry) {
-      originalRequest._retry = true
-      
-      const refreshToken = localStorage.getItem("refresh")
-      if (refreshToken) {
-        try {
-          // CORRECTION : Utilisez la mÃªme baseURL
-          const response = await api.post("/auth/token/refresh/", {
-            refresh: refreshToken
-          })
-          
-          localStorage.setItem("token", response.data.access)
-          originalRequest.headers.Authorization = `Bearer ${response.data.access}`
-          return api(originalRequest)
-        } catch (refreshError) {
-          console.error("Refresh token failed:", refreshError)
-          localStorage.removeItem("token")
-          localStorage.removeItem("refresh")
-          window.location.href = "/login"
-        }
-      }
-    }
-    return Promise.reject(error)
-  }
+  (error) => Promise.reject(error)
 )
 
 export default api
