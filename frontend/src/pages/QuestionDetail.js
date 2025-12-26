@@ -3,7 +3,6 @@
 import { useState, useEffect, useContext } from "react"
 import { useParams, Link, useNavigate } from "react-router-dom"
 import ReactMarkdown from "react-markdown"
-import remarkGfm from "remark-gfm"
 import { AuthContext } from "../context/AuthContext"
 import api from "../api/axios"
 
@@ -269,9 +268,9 @@ const QuestionDetail = () => {
 
             {/* Contenu de la question */}
             <div className="prose max-w-none mb-6 text-text-primary">
-              <ReactMarkdown remarkPlugins={[remarkGfm]}>
-                {question.content}
-              </ReactMarkdown>
+              <ReactMarkdown>
+  {content}
+</ReactMarkdown>
             </div>
 
             {/* Tags */}
