@@ -2,7 +2,7 @@ services:
   - type: web
     name: mini-stackoverflow-backend
     runtime: python
-    buildCommand: "./build.sh"
+    buildCommand: "./build.sh"  # ← Utilisez ceci
     startCommand: "gunicorn config.wsgi:application"
     envVars:
       - key: DATABASE_URL
@@ -21,3 +21,4 @@ databases:
     databaseName: mini_stackoverflow
     user: postgres
     plan: free
+    
