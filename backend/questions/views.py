@@ -93,6 +93,7 @@ class AnswerCreateView(generics.CreateAPIView):
     
     def perform_create(self, serializer):
         question_id = self.kwargs.get('question_id')
+        print(f"🎯 Création réponse - Question ID: {question_id}, User: {self.request.user.username}")
         serializer.save(
             author=self.request.user,
             question_id=question_id
@@ -238,3 +239,15 @@ class TagListView(generics.ListAPIView):
     queryset = Tag.objects.all()
     serializer_class = TagSerializer
     permission_classes = [permissions.AllowAny]
+
+
+# AJOUTEZ UserAnswersView ICI À LA FIN si vous en avez besoin
+class UserAnswersView(generics.ListAPIView):
+    """Récupérer toutes les réponses d'un utilisateur"""
+    serializer_class = AnswerSerializer
+    permission_classes = [permissions.IsAuthenticated]
+    
+    def get_queryset(self):
+        user_id = self.kwargs.get('user_id')
+        return Answer.objects.filter(author_id=user_id).order_by('-created_at')
+    

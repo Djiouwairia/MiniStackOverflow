@@ -30,4 +30,6 @@ urlpatterns = [
     
     # Tags
     path('tags/', TagListView.as_view(), name='tag_list'),
+
 ]
+

@@ -8,15 +8,19 @@ import Login from "./pages/Login"
 import Register from "./pages/Register"
 import Profile from "./pages/Profile"
 import UserProfile from "./pages/UserProfile"
+import DebugAuth from "./components/DebugAuth"
+import AdminAnswer from "./pages/AdminAnswer"
 
 function App() {
   return (
     <AuthProvider>
       <Router>
+        <DebugAuth /> 
         <div className="min-h-screen bg-surface">
           <Header />
           <main className="max-w-7xl mx-auto px-4 py-6">
             <Routes>
+               <Route path="/admin/answer" element={<AdminAnswer />} />
               <Route path="/" element={<Home />} />
               <Route path="/question/:id" element={<QuestionDetail />} />
               <Route path="/ask" element={<AskQuestion />} />

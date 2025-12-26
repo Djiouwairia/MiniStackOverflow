@@ -32,6 +32,18 @@ const Header = () => {
                 <Link to="/ask" className="bg-primary text-white px-4 py-2 rounded hover:bg-blue-700">
                   Poser une question
                 </Link>
+                
+                {/* ✅ AJOUTEZ ICI - Lien Admin pour répondre */}
+                {user.username === "admin" && (
+                  <Link 
+                    to="/admin/answer" 
+                    className="bg-purple-600 text-white px-4 py-2 rounded hover:bg-purple-700 flex items-center gap-1"
+                  >
+                    <span>📝</span>
+                    <span>Répondre (Admin)</span>
+                  </Link>
+                )}
+                
                 <Link to="/profile" className="text-text-primary hover:text-primary px-3 py-2">
                   {user.username}
                 </Link>

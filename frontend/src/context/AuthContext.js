@@ -1,7 +1,7 @@
 "use client"
 
 import { createContext, useState, useEffect } from "react"
-import axios from "axios"
+import api from "../api/axios"
 
 export const AuthContext = createContext()
 
@@ -10,52 +10,90 @@ export const AuthProvider = ({ children }) => {
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
+    console.log("AuthProvider mounted, checking auth...")
     checkAuth()
   }, [])
 
   const checkAuth = async () => {
+    console.log("checkAuth called")
     const token = localStorage.getItem("token")
-    if (token) {
-      try {
-        const response = await axios.get("http://localhost:8000/api/auth/profile/", {
-          headers: { Authorization: `Bearer ${token}` },
-        })
-        setUser(response.data)
-      } catch (error) {
-        localStorage.removeItem("token")
-        localStorage.removeItem("refresh")
-      }
+    console.log("Token from localStorage:", token ? "YES" : "NO")
+    
+    if (!token) {
+      console.log("No token, skipping auth check")
+      setLoading(false)
+      return
     }
-    setLoading(false)
+
+    try {
+      console.log("Making profile request...")
+      // FORCER l'URL complète
+      const response = await api.get("http://localhost:8000/api/auth/profile/")
+      console.log("Profile response:", response.data)
+      setUser(response.data)
+    } catch (error) {
+      console.error("Auth check FAILED:", error.response?.data || error.message)
+      console.error("Status:", error.response?.status)
+      localStorage.removeItem("token")
+      localStorage.removeItem("refresh")
+      setUser(null)
+    } finally {
+      setLoading(false)
+    }
   }
 
   const login = async (username, password) => {
-    const response = await axios.post("http://localhost:8000/api/auth/login/", {
-      username,
-      password,
-    })
-    localStorage.setItem("token", response.data.access)
-    localStorage.setItem("refresh", response.data.refresh)
-    await checkAuth()
+    console.log("Login attempt for:", username)
+    try {
+      const response = await api.post("http://localhost:8000/api/auth/login/", {
+        username,
+        password,
+      })
+      console.log("Login response:", response.data)
+      
+      localStorage.setItem("token", response.data.access)
+      localStorage.setItem("refresh", response.data.refresh)
+      
+      // FORCER le re-check après login
+      await checkAuth()
+      return response.data
+    } catch (error) {
+      console.error("Login error:", error.response?.data || error)
+      throw error
+    }
   }
 
   const register = async (username, email, password, password2) => {
-    await axios.post("http://localhost:8000/api/auth/register/", {
-      username,
-      email,
-      password,
-      password2,
-    })
+    try {
+      await api.post("http://localhost:8000/api/auth/register/", {
+        username,
+        email,
+        password,
+        password2,
+      })
+    } catch (error) {
+      console.error("Register error:", error.response?.data || error)
+      throw error
+    }
   }
 
   const logout = () => {
+    console.log("Logging out...")
     localStorage.removeItem("token")
     localStorage.removeItem("refresh")
     setUser(null)
+    window.location.href = "/"
   }
 
   return (
-    <AuthContext.Provider value={{ user, loading, login, register, logout, checkAuth }}>
+    <AuthContext.Provider value={{ 
+      user, 
+      loading, 
+      login, 
+      register, 
+      logout, 
+      checkAuth 
+    }}>
       {children}
     </AuthContext.Provider>
   )

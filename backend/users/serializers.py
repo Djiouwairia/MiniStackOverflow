@@ -75,3 +75,4 @@ class UserProfileSerializer(serializers.ModelSerializer):
         questions_votes = sum([q.vote_count for q in obj.questions.all()])
         answers_votes = sum([a.vote_count for a in obj.answers.all()])
         return questions_votes + answers_votes
+    

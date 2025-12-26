@@ -26,7 +26,7 @@ class CommentSerializer(serializers.ModelSerializer):
 class AnswerSerializer(serializers.ModelSerializer):
     author = UserSerializer(read_only=True)
     comments = CommentSerializer(many=True, read_only=True)
-    vote_count = serializers.ReadOnlyField()
+    vote_count = serializers.IntegerField(read_only=True)
     user_vote = serializers.SerializerMethodField()
     
     class Meta:
@@ -36,6 +36,9 @@ class AnswerSerializer(serializers.ModelSerializer):
             'vote_count', 'user_vote', 'comments', 'created_at', 'updated_at'
         ]
         read_only_fields = ['id', 'created_at', 'updated_at', 'is_accepted']
+        extra_kwargs = {
+            'question': {'required': False}  # ✅ AJOUTÉ: Django gère ce champ via perform_create
+        }
     
     def get_user_vote(self, obj):
         request = self.context.get('request')
@@ -48,9 +51,9 @@ class AnswerSerializer(serializers.ModelSerializer):
 class QuestionListSerializer(serializers.ModelSerializer):
     author = UserSerializer(read_only=True)
     tags = TagSerializer(many=True, read_only=True)
-    vote_count = serializers.ReadOnlyField()
-    answer_count = serializers.ReadOnlyField()
-    has_accepted_answer = serializers.ReadOnlyField()
+    vote_count = serializers.IntegerField(read_only=True)
+    answer_count = serializers.IntegerField(read_only=True)
+    has_accepted_answer = serializers.BooleanField(read_only=True)
     
     class Meta:
         model = Question
@@ -70,8 +73,8 @@ class QuestionDetailSerializer(serializers.ModelSerializer):
         write_only=True
     )
     answers = AnswerSerializer(many=True, read_only=True)
-    vote_count = serializers.ReadOnlyField()
-    answer_count = serializers.ReadOnlyField()
+    vote_count = serializers.IntegerField(read_only=True)
+    answer_count = serializers.IntegerField(read_only=True)
     user_vote = serializers.SerializerMethodField()
     
     class Meta:
@@ -95,3 +98,4 @@ class VoteSerializer(serializers.ModelSerializer):
     class Meta:
         model = Vote
         fields = ['value']
+        
