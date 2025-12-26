@@ -1,7 +1,7 @@
 import axios from "axios"
 
 const api = axios.create({
-  baseURL: "http://localhost:8000/api", // URL ABSOLUE pour éviter les problèmes
+  baseURL: process.env.REACT_APP_API_URL || "https://mini-stackoverflow-backend.onrender.com/api",
 })
 
 // CORRECTION CRITIQUE : Ajouter le token à TOUTES les requêtes
