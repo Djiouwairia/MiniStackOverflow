@@ -1,19 +1,23 @@
 import axios from "axios"
 
+// URL corrigée - utilise celle de Render
 const api = axios.create({
-  baseURL: process.env.REACT_APP_API_URL || "https://mini-stackoverflow-backend.onrender.com/api",
+  baseURL: process.env.REACT_APP_API_URL,
+  headers: {
+    "Content-Type": "application/json",
+  },
 })
 
 // CORRECTION CRITIQUE : Ajouter le token à TOUTES les requêtes
 api.interceptors.request.use(
   (config) => {
     const token = localStorage.getItem("token")
-    console.log("Token found for request:", !!token) // Debug
+    console.log("Token found for request:", !!token)
     if (token) {
       config.headers.Authorization = `Bearer ${token}`
-      console.log("Authorization header set") // Debug
+      console.log("Authorization header set")
     } else {
-      console.warn("No token found") // Debug
+      console.warn("No token found")
     }
     return config
   },
@@ -23,7 +27,7 @@ api.interceptors.request.use(
   }
 )
 
-// Refresh token
+// Refresh token - CORRIGEZ l'URL ici aussi !
 api.interceptors.response.use(
   (response) => response,
   async (error) => {
@@ -35,10 +39,11 @@ api.interceptors.response.use(
       const refreshToken = localStorage.getItem("refresh")
       if (refreshToken) {
         try {
-          const response = await axios.post(
-            "http://localhost:8000/api/auth/token/refresh/", 
-            { refresh: refreshToken }
-          )
+          // CORRECTION : Utilisez la même baseURL
+          const response = await api.post("/auth/token/refresh/", {
+            refresh: refreshToken
+          })
+          
           localStorage.setItem("token", response.data.access)
           originalRequest.headers.Authorization = `Bearer ${response.data.access}`
           return api(originalRequest)

@@ -27,8 +27,8 @@ export const AuthProvider = ({ children }) => {
 
     try {
       console.log("Making profile request...")
-      // FORCER l'URL complète
-      const response = await api.get("http://localhost:8000/api/auth/profile/")
+      // CORRECTION : Utilisez le chemin relatif, pas l'URL absolue
+      const response = await api.get("/auth/profile/")
       console.log("Profile response:", response.data)
       setUser(response.data)
     } catch (error) {
@@ -45,7 +45,8 @@ export const AuthProvider = ({ children }) => {
   const login = async (username, password) => {
     console.log("Login attempt for:", username)
     try {
-      const response = await api.post("http://localhost:8000/api/auth/login/", {
+      // CORRECTION : Utilisez le chemin relatif
+      const response = await api.post("/auth/login/", {
         username,
         password,
       })
@@ -54,7 +55,6 @@ export const AuthProvider = ({ children }) => {
       localStorage.setItem("token", response.data.access)
       localStorage.setItem("refresh", response.data.refresh)
       
-      // FORCER le re-check après login
       await checkAuth()
       return response.data
     } catch (error) {
@@ -65,7 +65,8 @@ export const AuthProvider = ({ children }) => {
 
   const register = async (username, email, password, password2) => {
     try {
-      await api.post("http://localhost:8000/api/auth/register/", {
+      // CORRECTION : Utilisez le chemin relatif
+      await api.post("/auth/register/", {
         username,
         email,
         password,
