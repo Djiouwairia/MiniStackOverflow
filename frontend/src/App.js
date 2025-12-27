@@ -10,12 +10,16 @@ import Profile from "./pages/Profile"
 import UserProfile from "./pages/UserProfile"
 import DebugAuth from "./components/DebugAuth"
 import AdminAnswer from "./pages/AdminAnswer"
+import DebugEnv from "./components/DebugEnv"
+
 
 function App() {
   return (
     <AuthProvider>
       <Router>
         <DebugAuth /> 
+        <DebugEnv />
+
         <div className="min-h-screen bg-surface">
           <Header />
           <main className="max-w-7xl mx-auto px-4 py-6">
