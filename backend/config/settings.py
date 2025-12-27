@@ -24,7 +24,6 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     
-    
     # Third party apps
     'rest_framework',
     'rest_framework_simplejwt',
@@ -36,7 +35,6 @@ INSTALLED_APPS = [
     'questions',
 ]
 
-
 CORS_ALLOW_METHODS = [
     "GET",
     "POST",
@@ -45,7 +43,6 @@ CORS_ALLOW_METHODS = [
     "DELETE",
     "OPTIONS",
 ]
-
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -199,58 +196,21 @@ SIMPLE_JWT = {
     'USER_ID_CLAIM': 'user_id',
 }
 
-# CORS Settings - CORRIGÉ
-CORS_ALLOWED_ORIGINS = []
-
-# Lire depuis .env ou variables d'environnement
-try:
-    cors_origins = config('CORS_ALLOWED_ORIGINS', default='')
-    if cors_origins:
-        CORS_ALLOWED_ORIGINS = cors_origins.split(',')
-except:
-    # Fallback par défaut
-    CORS_ALLOWED_ORIGINS = ['http://localhost:3000', 'http://127.0.0.1:3000']
-
-# Ajouter les URLs de production si pas en DEBUG
-if not DEBUG:
-    CORS_ALLOWED_ORIGINS.extend([
-        "https://mini-stack-frontend.vercel.app",
-        "https://mini-stackoverflow-backend.onrender.com",
-    ])
-    # Ajouter aussi pour Render
-    ALLOWED_HOSTS.append('mini-stackoverflow-backend.onrender.com')
-    ALLOWED_HOSTS.append('.onrender.com')
-
-CORS_ALLOW_ALL_ORIGINS = DEBUG
-CORS_ALLOW_CREDENTIALS = True
-
-# Security settings for production
-if not DEBUG:
-    SECURE_SSL_REDIRECT = True
-    SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
-    SESSION_COOKIE_SECURE = True
-    CSRF_COOKIE_SECURE = True
-    SECURE_HSTS_SECONDS = 31536000
-    SECURE_HSTS_INCLUDE_SUBDOMAINS = True
-    SECURE_HSTS_PRELOAD = True
-    
-    
-    # ============================
-# CORS Settings - FINAL
+# ============================
+# CORS Settings - UNIQUEMENT LA VERSION SIMPLE
 # ============================
 
-# Origines autorisées
+# Origines autorisées - UNIQUEMENT CE BLOC EST GARDÉ
 CORS_ALLOWED_ORIGINS = [
+    "https://mini-stack-frontend.vercel.app",
     "http://localhost:3000",
     "http://127.0.0.1:3000",
 ]
 
+# Ajouter les hosts pour Render en production
 if not DEBUG:
-    CORS_ALLOWED_ORIGINS.extend([
-        "https://mini-stack-frontend.vercel.app",  # ton frontend Vercel
-    ])
-    ALLOWED_HOSTS.append("mini-stackoverflow-backend.onrender.com")
-    ALLOWED_HOSTS.append(".onrender.com")
+    ALLOWED_HOSTS.append('mini-stackoverflow-backend.onrender.com')
+    ALLOWED_HOSTS.append('.onrender.com')
 
 # Autoriser les credentials (cookies, headers)
 CORS_ALLOW_CREDENTIALS = True
@@ -266,3 +226,13 @@ CORS_ALLOW_HEADERS = [
     "Accept",
     "Origin",
 ]
+
+# Security settings for production
+if not DEBUG:
+    SECURE_SSL_REDIRECT = True
+    SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+    SESSION_COOKIE_SECURE = True
+    CSRF_COOKIE_SECURE = True
+    SECURE_HSTS_SECONDS = 31536000
+    SECURE_HSTS_INCLUDE_SUBDOMAINS = True
+    SECURE_HSTS_PRELOAD = True
