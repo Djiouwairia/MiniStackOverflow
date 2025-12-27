@@ -1,4 +1,4 @@
-﻿"use client"
+"use client"
 
 import { useState, useEffect } from "react"
 import { useParams } from "react-router-dom"
@@ -41,7 +41,7 @@ const UserProfile = () => {
           )}
 
           <div>
-            <label className="text-text-secondary">RÃ©putation</label>
+            <label className="text-text-secondary">Réputation</label>
             <p className="text-2xl font-bold text-primary">{user.reputation}</p>
           </div>
 
@@ -57,11 +57,11 @@ const UserProfile = () => {
             </div>
             <div className="bg-surface p-4 rounded text-center">
               <p className="text-3xl font-bold text-secondary">{user.answers_count}</p>
-              <p className="text-text-secondary">RÃ©ponses</p>
+              <p className="text-text-secondary">Réponses</p>
             </div>
             <div className="bg-surface p-4 rounded text-center">
               <p className="text-3xl font-bold text-success">{user.total_votes}</p>
-              <p className="text-text-secondary">Votes reÃ§us</p>
+              <p className="text-text-secondary">Votes reçus</p>
             </div>
           </div>
         </div>

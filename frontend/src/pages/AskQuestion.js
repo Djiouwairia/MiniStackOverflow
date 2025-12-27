@@ -1,4 +1,4 @@
-﻿"use client"
+"use client"
 
 import { useState, useEffect, useContext } from "react"
 import { useNavigate } from "react-router-dom"
@@ -8,7 +8,7 @@ import api from "../api/axios"
 const AskQuestion = () => {
   const [title, setTitle] = useState("")
   const [content, setContent] = useState("")
-  const [tags, setTags] = useState([]) // DOIT ÃŠTRE UN TABLEAU
+  const [tags, setTags] = useState([]) // DOIT ÊTRE UN TABLEAU
   const [selectedTags, setSelectedTags] = useState([])
   const [error, setError] = useState("")
   const [loading, setLoading] = useState(false)
@@ -26,14 +26,14 @@ const AskQuestion = () => {
       const response = await api.get("/tags/")
       console.log("Tags API response:", response.data)
       
-      // ðŸ”¥ CORRECTION : L'API peut retourner {results: [...]} ou directement [...]
+      // 🔥 CORRECTION : L'API peut retourner {results: [...]} ou directement [...]
       const apiData = response.data
       const tagsData = apiData.results || apiData
       
       // S'assurer que c'est un tableau
       if (Array.isArray(tagsData)) {
         setTags(tagsData)
-        console.log("Tags chargÃ©s:", tagsData.length)
+        console.log("Tags chargés:", tagsData.length)
       } else {
         console.error("Tags n'est pas un tableau:", tagsData)
         setTags([])
@@ -56,7 +56,7 @@ const AskQuestion = () => {
     }
 
     if (selectedTags.length === 0) {
-      setError("Veuillez sÃ©lectionner au moins un tag")
+      setError("Veuillez sélectionner au moins un tag")
       return
     }
 
@@ -66,11 +66,11 @@ const AskQuestion = () => {
         content,
         tag_ids: selectedTags,
       })
-      console.log("Question crÃ©Ã©e:", response.data)
+      console.log("Question créée:", response.data)
       navigate(`/question/${response.data.id}`)
     } catch (err) {
-      console.error("Erreur crÃ©ation question:", err.response?.data || err)
-      setError(err.response?.data?.detail || "Erreur lors de la crÃ©ation de la question")
+      console.error("Erreur création question:", err.response?.data || err)
+      setError(err.response?.data?.detail || "Erreur lors de la création de la question")
     }
   }
 
@@ -105,7 +105,7 @@ const AskQuestion = () => {
               type="text"
               value={title}
               onChange={(e) => setTitle(e.target.value)}
-              placeholder="Ex: Comment crÃ©er un serveur REST avec Django?"
+              placeholder="Ex: Comment créer un serveur REST avec Django?"
               className="w-full px-3 py-2 border border-border rounded focus:outline-none focus:ring-2 focus:ring-primary"
               required
             />
@@ -113,12 +113,12 @@ const AskQuestion = () => {
 
           <div>
             <label className="block text-text-primary font-medium mb-2">
-              Description (Markdown supportÃ©)
+              Description (Markdown supporté)
             </label>
             <textarea
               value={content}
               onChange={(e) => setContent(e.target.value)}
-              placeholder="DÃ©crivez votre problÃ¨me en dÃ©tail..."
+              placeholder="Décrivez votre problème en détail..."
               rows="10"
               className="w-full px-3 py-2 border border-border rounded focus:outline-none focus:ring-2 focus:ring-primary font-mono text-sm"
               required
@@ -131,7 +131,7 @@ const AskQuestion = () => {
             </label>
             
             <div className="text-sm text-text-secondary mb-3">
-              Tags sÃ©lectionnÃ©s: {selectedTags.length}
+              Tags sélectionnés: {selectedTags.length}
             </div>
             
             {loading ? (
@@ -142,7 +142,7 @@ const AskQuestion = () => {
             ) : safeTags.length === 0 ? (
               <div className="bg-yellow-50 border border-yellow-200 rounded p-4">
                 <p className="text-yellow-800">
-                  Aucun tag disponible. CrÃ©ez d'abord des tags dans l'admin Django.
+                  Aucun tag disponible. Créez d'abord des tags dans l'admin Django.
                 </p>
               </div>
             ) : (

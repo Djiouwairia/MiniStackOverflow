@@ -1,6 +1,6 @@
-﻿import axios from "axios"
+import axios from "axios"
 
-// 🚀 VERSION PRODUCTION UNIQUEMENT
+// ?? VERSION PRODUCTION UNIQUEMENT
 const API_URL = "https://mini-stackoverflow-backend.onrender.com/api"
 
 const api = axios.create({
@@ -8,7 +8,7 @@ const api = axios.create({
   headers: { "Content-Type": "application/json" },
 })
 
-console.log("✅ API configurée pour:", API_URL)
+console.log("? API configur�e pour:", API_URL)
 
 api.interceptors.request.use((config) => {
   const token = localStorage.getItem("token")

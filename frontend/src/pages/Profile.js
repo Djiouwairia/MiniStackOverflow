@@ -1,4 +1,4 @@
-﻿"use client"
+"use client"
 
 import { useState, useEffect, useContext } from "react"
 import { AuthContext } from "../context/AuthContext"
@@ -22,16 +22,16 @@ const Profile = () => {
     
     try {
       setAnswersLoading(true)
-      // RÃ©cupÃ©rer toutes les rÃ©ponses de l'utilisateur
+      // Récupérer toutes les réponses de l'utilisateur
       const response = await api.get(`/questions/?author=${user.id}&include_answers=true`)
-      // Ou implÃ©mentez un endpoint spÃ©cifique dans votre backend
-      console.log("RÃ©ponses utilisateur:", response.data)
+      // Ou implémentez un endpoint spécifique dans votre backend
+      console.log("Réponses utilisateur:", response.data)
       
-      // Si votre backend n'a pas cet endpoint, on peut filtrer cÃ´tÃ© frontend
+      // Si votre backend n'a pas cet endpoint, on peut filtrer côté frontend
       // Pour l'instant, on va juste afficher un message
       setUserAnswers([])
     } catch (error) {
-      console.error("Erreur chargement rÃ©ponses:", error)
+      console.error("Erreur chargement réponses:", error)
     } finally {
       setAnswersLoading(false)
     }
@@ -42,7 +42,7 @@ const Profile = () => {
 
   return (
     <div className="max-w-6xl mx-auto px-4">
-      {/* En-tÃªte du profil */}
+      {/* En-tête du profil */}
       <div className="bg-white p-8 rounded-lg shadow-md border border-border mb-6">
         <h1 className="text-3xl font-bold text-text-primary mb-6">Mon profil</h1>
 
@@ -74,7 +74,7 @@ const Profile = () => {
             <div className="grid grid-cols-3 gap-4">
               <div className="bg-surface p-4 rounded text-center">
                 <p className="text-3xl font-bold text-primary">{user.reputation}</p>
-                <p className="text-text-secondary">RÃ©putation</p>
+                <p className="text-text-secondary">Réputation</p>
               </div>
               <div className="bg-surface p-4 rounded text-center">
                 <p className="text-3xl font-bold text-primary">{user.questions_count || 0}</p>
@@ -82,7 +82,7 @@ const Profile = () => {
               </div>
               <div className="bg-surface p-4 rounded text-center">
                 <p className="text-3xl font-bold text-secondary">{user.answers_count || 0}</p>
-                <p className="text-text-secondary">RÃ©ponses</p>
+                <p className="text-text-secondary">Réponses</p>
               </div>
             </div>
             
@@ -95,7 +95,7 @@ const Profile = () => {
           </div>
         </div>
 
-        {/* Onglets pour questions/rÃ©ponses */}
+        {/* Onglets pour questions/réponses */}
         <div className="border-b border-border mb-6">
           <div className="flex space-x-4">
             <button
@@ -108,7 +108,7 @@ const Profile = () => {
               onClick={() => setActiveTab("answers")}
               className={`pb-3 px-1 font-medium ${activeTab === "answers" ? "text-primary border-b-2 border-primary" : "text-text-secondary"}`}
             >
-              Mes RÃ©ponses ({user.answers_count || 0})
+              Mes Réponses ({user.answers_count || 0})
             </button>
           </div>
         </div>
@@ -119,28 +119,28 @@ const Profile = () => {
             <h3 className="text-xl font-bold text-text-primary mb-4">Mes questions</h3>
             {user.questions_count === 0 ? (
               <div className="text-center py-8 bg-surface rounded">
-                <p className="text-text-secondary">Vous n'avez pas encore posÃ© de questions</p>
+                <p className="text-text-secondary">Vous n'avez pas encore posé de questions</p>
                 <Link to="/ask" className="text-primary hover:text-blue-700 mt-2 inline-block">
-                  Poser ma premiÃ¨re question
+                  Poser ma première question
                 </Link>
               </div>
             ) : (
               <p className="text-text-secondary">
-                Vos questions apparaissent sur la page d'accueil. Cliquez dessus pour voir les rÃ©ponses.
+                Vos questions apparaissent sur la page d'accueil. Cliquez dessus pour voir les réponses.
               </p>
             )}
           </div>
         ) : (
           <div>
-            <h3 className="text-xl font-bold text-text-primary mb-4">Mes rÃ©ponses</h3>
+            <h3 className="text-xl font-bold text-text-primary mb-4">Mes réponses</h3>
             {answersLoading ? (
               <div className="text-center py-8">
                 <div className="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
-                <p className="mt-2 text-text-secondary">Chargement des rÃ©ponses...</p>
+                <p className="mt-2 text-text-secondary">Chargement des réponses...</p>
               </div>
             ) : user.answers_count === 0 ? (
               <div className="text-center py-8 bg-surface rounded">
-                <p className="text-text-secondary">Vous n'avez pas encore rÃ©pondu Ã  des questions</p>
+                <p className="text-text-secondary">Vous n'avez pas encore répondu à des questions</p>
                 <p className="text-sm text-text-secondary mt-2">
                   Parcourez les questions sur la page d'accueil pour aider d'autres utilisateurs
                 </p>
@@ -148,13 +148,13 @@ const Profile = () => {
             ) : (
               <div className="space-y-4">
                 <p className="text-text-secondary">
-                  Vous avez donnÃ© {user.answers_count} rÃ©ponse{user.answers_count > 1 ? 's' : ''}.
+                  Vous avez donné {user.answers_count} réponse{user.answers_count > 1 ? 's' : ''}.
                 </p>
-                {/* Ici vous pourriez lister les rÃ©ponses si votre backend le permet */}
+                {/* Ici vous pourriez lister les réponses si votre backend le permet */}
                 <div className="bg-yellow-50 border border-yellow-200 rounded p-4">
                   <p className="text-yellow-800">
-                    âš ï¸ Pour afficher la liste dÃ©taillÃ©e de vos rÃ©ponses, 
-                    votre backend doit implÃ©menter un endpoint comme <code>/api/users/{user.id}/answers/</code>
+                    ⚠️ Pour afficher la liste détaillée de vos réponses, 
+                    votre backend doit implémenter un endpoint comme <code>/api/users/{user.id}/answers/</code>
                   </p>
                 </div>
               </div>
@@ -169,7 +169,7 @@ const Profile = () => {
           to="/ask" 
           className="bg-primary text-white p-4 rounded-lg text-center hover:bg-blue-700 transition-colors"
         >
-          <div className="text-2xl mb-2">âœï¸</div>
+          <div className="text-2xl mb-2">✏️</div>
           <div className="font-bold">Poser une question</div>
         </Link>
         
@@ -177,15 +177,15 @@ const Profile = () => {
           to="/" 
           className="bg-secondary text-white p-4 rounded-lg text-center hover:bg-orange-600 transition-colors"
         >
-          <div className="text-2xl mb-2">ðŸ”</div>
+          <div className="text-2xl mb-2">🔍</div>
           <div className="font-bold">Parcourir les questions</div>
         </Link>
         
         <div 
           className="bg-success text-white p-4 rounded-lg text-center cursor-pointer hover:bg-green-600 transition-colors"
-          onClick={() => alert("FonctionnalitÃ© Ã  venir: Notifications")}
+          onClick={() => alert("Fonctionnalité à venir: Notifications")}
         >
-          <div className="text-2xl mb-2">ðŸ””</div>
+          <div className="text-2xl mb-2">🔔</div>
           <div className="font-bold">Mes notifications</div>
         </div>
       </div>
