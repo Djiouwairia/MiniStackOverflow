@@ -1,8 +1,12 @@
 import axios from "axios"
 
-const API_URL = process.env.REACT_APP_API_URL || "https://mini-stackoverflow-backend.onrender.com/api"
-console.log("🌍 API_URL utilisé :", API_URL)
+// ⚠️ On supprime le fallback vers localhost en production
+const API_URL = process.env.REACT_APP_API_URL;
+if (!API_URL) {
+  throw new Error("❌ REACT_APP_API_URL n'est pas défini dans l'environnement !");
+}
 
+console.log("🌍 API_URL utilisé :", API_URL);
 
 const api = axios.create({
   baseURL: API_URL,
