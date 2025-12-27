@@ -227,6 +227,12 @@ CORS_ALLOW_HEADERS = [
     "Origin",
 ]
 
+
+# Autoriser aussi les URLs temporaires de Vercel (preview deploys)
+CORS_ALLOWED_ORIGIN_REGEXES = [ r"^https://.*\.vercel\.app$", ]
+
+
+
 # Security settings for production
 if not DEBUG:
     SECURE_SSL_REDIRECT = True
@@ -236,3 +242,9 @@ if not DEBUG:
     SECURE_HSTS_SECONDS = 31536000
     SECURE_HSTS_INCLUDE_SUBDOMAINS = True
     SECURE_HSTS_PRELOAD = True
+    
+    
+    
+    # ============================
+# CORS Settings
+# ============================
