@@ -27,15 +27,12 @@ export const AuthProvider = ({ children }) => {
 
     try {
       console.log("Making profile request...")
-      // CORRECTION : Utilisez le chemin relatif, pas l'URL absolue
       const response = await api.get("/auth/profile/")
       console.log("Profile response:", response.data)
       setUser(response.data)
     } catch (error) {
       console.error("Auth check FAILED:", error.response?.data || error.message)
       console.error("Status:", error.response?.status)
-      localStorage.removeItem("token")
-      localStorage.removeItem("refresh")
       setUser(null)
     } finally {
       setLoading(false)
@@ -45,7 +42,6 @@ export const AuthProvider = ({ children }) => {
   const login = async (username, password) => {
     console.log("Login attempt for:", username)
     try {
-      // CORRECTION : Utilisez le chemin relatif
       const response = await api.post("/auth/login/", {
         username,
         password,
@@ -64,8 +60,10 @@ export const AuthProvider = ({ children }) => {
   }
 
   const register = async (username, email, password, password2) => {
+ 
+ 
     try {
-      // CORRECTION : Utilisez le chemin relatif
+
       await api.post("/auth/register/", {
         username,
         email,
