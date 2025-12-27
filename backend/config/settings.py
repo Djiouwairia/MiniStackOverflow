@@ -24,6 +24,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     
+    
     # Third party apps
     'rest_framework',
     'rest_framework_simplejwt',
@@ -34,6 +35,17 @@ INSTALLED_APPS = [
     'users',
     'questions',
 ]
+
+
+CORS_ALLOW_METHODS = [
+    "GET",
+    "POST",
+    "PUT",
+    "PATCH",
+    "DELETE",
+    "OPTIONS",
+]
+
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -223,3 +235,34 @@ if not DEBUG:
     SECURE_HSTS_PRELOAD = True
     
     
+    # ============================
+# CORS Settings - FINAL
+# ============================
+
+# Origines autorisées
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:3000",
+    "http://127.0.0.1:3000",
+]
+
+if not DEBUG:
+    CORS_ALLOWED_ORIGINS.extend([
+        "https://mini-stack-frontend.vercel.app",  # ton frontend Vercel
+    ])
+    ALLOWED_HOSTS.append("mini-stackoverflow-backend.onrender.com")
+    ALLOWED_HOSTS.append(".onrender.com")
+
+# Autoriser les credentials (cookies, headers)
+CORS_ALLOW_CREDENTIALS = True
+
+# En mode DEBUG, autoriser tout
+CORS_ALLOW_ALL_ORIGINS = DEBUG
+
+# Headers autorisés (important pour JWT)
+CORS_ALLOW_HEADERS = [
+    "Authorization",
+    "Content-Type",
+    "X-CSRFToken",
+    "Accept",
+    "Origin",
+]
