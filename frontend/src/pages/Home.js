@@ -1,9 +1,9 @@
-"use client"
+﻿"use client"
 
 import { useState, useEffect, useContext } from "react"
 import { Link } from "react-router-dom"
 import { AuthContext } from "../context/AuthContext"
-import api from "../api/axios-nuke"
+import api from "../api/axios"
 
 const Home = () => {
   const [questions, setQuestions] = useState([])
@@ -20,7 +20,7 @@ const Home = () => {
       setLoading(true)
       let params = {}
       
-      // Construire les paramètres
+      // Construire les paramÃ¨tres
       switch(activeFilter) {
         case "popular":
           params.sort = "votes"
@@ -32,29 +32,29 @@ const Home = () => {
           params.ordering = "-created_at"
       }
       
-      console.log("📡 Requête API avec params:", params)
+      console.log("ðŸ“¡ RequÃªte API avec params:", params)
       const response = await api.get("/questions/", { params })
       
-      // 🔥 CORRECTION CRITIQUE ICI :
+      // ðŸ”¥ CORRECTION CRITIQUE ICI :
       // L'API retourne {count, next, previous, results: [...]}
       const apiData = response.data
-      console.log("📦 Structure réponse API:", apiData)
-      console.log("🎯 Résultats (questions):", apiData.results)
+      console.log("ðŸ“¦ Structure rÃ©ponse API:", apiData)
+      console.log("ðŸŽ¯ RÃ©sultats (questions):", apiData.results)
       
-      // Prenez les résultats, pas toute la réponse
+      // Prenez les rÃ©sultats, pas toute la rÃ©ponse
       const questionsData = apiData.results || apiData
       setQuestions(Array.isArray(questionsData) ? questionsData : [])
       
-      // DEBUG : Vérifiez la première question
+      // DEBUG : VÃ©rifiez la premiÃ¨re question
       if (questionsData.length > 0) {
-        console.log("✅ PREMIÈRE QUESTION:", questionsData[0])
-        console.log("✅ vote_count:", questionsData[0].vote_count)
-        console.log("✅ answer_count:", questionsData[0].answer_count)
-        console.log("✅ has_accepted_answer:", questionsData[0].has_accepted_answer)
+        console.log("âœ… PREMIÃˆRE QUESTION:", questionsData[0])
+        console.log("âœ… vote_count:", questionsData[0].vote_count)
+        console.log("âœ… answer_count:", questionsData[0].answer_count)
+        console.log("âœ… has_accepted_answer:", questionsData[0].has_accepted_answer)
       }
       
     } catch (error) {
-      console.error("❌ Erreur:", error.response || error)
+      console.error("âŒ Erreur:", error.response || error)
       setQuestions([])
     } finally {
       setLoading(false)
@@ -68,24 +68,24 @@ const Home = () => {
     }
     
     try {
-      console.log(`🗳️ Vote: question ${questionId}, valeur: ${value}`)
+      console.log(`ðŸ—³ï¸ Vote: question ${questionId}, valeur: ${value}`)
       await api.post(`/questions/${questionId}/vote/`, { value })
-      // Recharger les questions après le vote
+      // Recharger les questions aprÃ¨s le vote
       fetchQuestions()
     } catch (error) {
-      console.error("❌ Erreur de vote:", error.response?.data || error)
+      console.error("âŒ Erreur de vote:", error.response?.data || error)
       alert(error.response?.data?.detail || "Erreur lors du vote")
     }
   }
 
-  // RENDU SIMPLIFIÉ POUR TEST
+  // RENDU SIMPLIFIÃ‰ POUR TEST
   if (loading) {
     return <div className="text-center py-12">Chargement...</div>
   }
 
   return (
     <div className="max-w-4xl mx-auto px-4">
-      {/* En-tête */}
+      {/* En-tÃªte */}
       <div className="flex justify-between items-center mb-8">
         <h1 className="text-3xl font-bold text-text-primary">Toutes les questions</h1>
         <Link 
@@ -102,7 +102,7 @@ const Home = () => {
           onClick={() => setActiveFilter("recent")}
           className={`px-4 py-2 rounded ${activeFilter === "recent" ? "bg-blue-600 text-white" : "bg-white text-gray-800 border"}`}
         >
-          Récentes
+          RÃ©centes
         </button>
         <button
           onClick={() => setActiveFilter("popular")}
@@ -114,21 +114,21 @@ const Home = () => {
           onClick={() => setActiveFilter("unanswered")}
           className={`px-4 py-2 rounded ${activeFilter === "unanswered" ? "bg-blue-600 text-white" : "bg-white text-gray-800 border"}`}
         >
-          Sans réponse
+          Sans rÃ©ponse
         </button>
       </div>
 
       {/* DEBUG VISUEL */}
       <div className="mb-6 p-4 bg-yellow-50 border border-yellow-200 rounded">
-        <strong>DEBUG:</strong> {questions.length} questions chargées | 
+        <strong>DEBUG:</strong> {questions.length} questions chargÃ©es | 
         Filtre: {activeFilter} | 
-        User: {user ? user.username : "Non connecté"}
+        User: {user ? user.username : "Non connectÃ©"}
       </div>
 
-      {/* Liste des questions - VERSION SIMPLIFIÉE POUR TEST */}
+      {/* Liste des questions - VERSION SIMPLIFIÃ‰E POUR TEST */}
       <div className="space-y-6">
         {questions.map((question) => {
-          console.log(`🎨 Rendu question ${question.id}:`, {
+          console.log(`ðŸŽ¨ Rendu question ${question.id}:`, {
             vote_count: question.vote_count,
             answer_count: question.answer_count,
             has_accepted: question.has_accepted_answer
@@ -153,24 +153,24 @@ const Home = () => {
                       className={`text-3xl p-2 rounded-full ${user ? "text-gray-500 hover:text-green-600 hover:bg-green-50" : "text-gray-300 cursor-not-allowed"}`}
                       title={user ? "Voter positivement" : "Connectez-vous pour voter"}
                     >
-                      ▲
+                      â–²
                     </button>
                     <button
                       onClick={() => handleVote(question.id, -1)}
                       disabled={!user}
                       className={`text-3xl p-2 rounded-full ${user ? "text-gray-500 hover:text-red-600 hover:bg-red-50" : "text-gray-300 cursor-not-allowed"}`}
-                      title={user ? "Voter négativement" : "Connectez-vous pour voter"}
+                      title={user ? "Voter nÃ©gativement" : "Connectez-vous pour voter"}
                     >
-                      ▼
+                      â–¼
                     </button>
                   </div>
                   
-                  {/* Réponses */}
+                  {/* RÃ©ponses */}
                   <div className="text-center mb-4">
                     <div className={`text-2xl font-bold ${question.has_accepted_answer ? "text-green-600" : "text-gray-800"}`}>
                       {question.answer_count}
                     </div>
-                    <div className="text-sm text-gray-600">réponses</div>
+                    <div className="text-sm text-gray-600">rÃ©ponses</div>
                   </div>
                   
                   {/* Vues */}
@@ -201,18 +201,18 @@ const Home = () => {
                     ))}
                   </div>
                   
-                  {/* Métadonnées */}
+                  {/* MÃ©tadonnÃ©es */}
                   <div className="flex justify-between items-center text-sm text-gray-600 mt-4 pt-4 border-t">
                     <div className="flex items-center gap-3">
                       <div className="flex items-center gap-2">
                         <span className="font-medium">{question.author?.username}</span>
                         <span className="bg-gray-100 text-gray-700 px-2 py-0.5 rounded text-xs">
-                          {question.author?.reputation || 0} réputation
+                          {question.author?.reputation || 0} rÃ©putation
                         </span>
                       </div>
                     </div>
                     <div className="text-gray-500">
-                      posé le {new Date(question.created_at).toLocaleDateString("fr-FR", {
+                      posÃ© le {new Date(question.created_at).toLocaleDateString("fr-FR", {
                         day: 'numeric',
                         month: 'long',
                         year: 'numeric'
@@ -234,13 +234,14 @@ const Home = () => {
         })}
       </div>
 
-      {/* Résumé */}
+      {/* RÃ©sumÃ© */}
       <div className="mt-8 text-center text-gray-600">
-        {questions.length} question{questions.length > 1 ? 's' : ''} affichée{questions.length > 1 ? 's' : ''}
+        {questions.length} question{questions.length > 1 ? 's' : ''} affichÃ©e{questions.length > 1 ? 's' : ''}
       </div>
     </div>
   )
 }
 
 export default Home
+
 

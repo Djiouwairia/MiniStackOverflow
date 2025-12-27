@@ -1,10 +1,10 @@
-"use client"
+﻿"use client"
 
 import { useState, useEffect, useContext } from "react"
 import { useParams, Link, useNavigate } from "react-router-dom"
 import ReactMarkdown from "react-markdown"
 import { AuthContext } from "../context/AuthContext"
-import api from "../api/axios-nuke"
+import api from "../api/axios"
 
 const QuestionDetail = () => {
   const { id } = useParams()
@@ -25,7 +25,7 @@ const QuestionDetail = () => {
     try {
       setLoading(true)
       const response = await api.get(`/questions/${id}/`)
-      console.log("Question détail:", response.data)
+      console.log("Question dÃ©tail:", response.data)
       setQuestion(response.data)
     } catch (error) {
       console.error("Erreur chargement question:", error.response || error)
@@ -52,7 +52,7 @@ const QuestionDetail = () => {
     }
   }
 
-  // Voter sur une réponse
+  // Voter sur une rÃ©ponse
   const handleAnswerVote = async (answerId, value) => {
     if (!user) {
       alert("Connectez-vous pour voter")
@@ -64,40 +64,40 @@ const QuestionDetail = () => {
       await api.post(`/answers/${answerId}/vote/`, { value })
       fetchQuestion() // Recharger
     } catch (error) {
-      console.error("Erreur vote réponse:", error.response?.data || error)
+      console.error("Erreur vote rÃ©ponse:", error.response?.data || error)
       alert(error.response?.data?.detail || "Erreur lors du vote")
     }
   }
 
-  // Accepter une réponse (seul l'auteur de la question peut)
+  // Accepter une rÃ©ponse (seul l'auteur de la question peut)
   const handleAcceptAnswer = async (answerId) => {
     if (!user) return
     
     try {
       await api.post(`/answers/${answerId}/accept/`)
-      setSuccess("Réponse acceptée comme meilleure réponse !")
+      setSuccess("RÃ©ponse acceptÃ©e comme meilleure rÃ©ponse !")
       fetchQuestion() // Recharger
       
-      // Cacher le message après 3 secondes
+      // Cacher le message aprÃ¨s 3 secondes
       setTimeout(() => setSuccess(""), 3000)
     } catch (error) {
-      console.error("Erreur acceptation réponse:", error.response?.data || error)
+      console.error("Erreur acceptation rÃ©ponse:", error.response?.data || error)
       setError(error.response?.data?.detail || "Erreur lors de l'acceptation")
     }
   }
 
-  // Soumettre une nouvelle réponse
+  // Soumettre une nouvelle rÃ©ponse
   const handleSubmitAnswer = async (e) => {
     e.preventDefault()
     
     if (!user) {
-      alert("Connectez-vous pour répondre")
+      alert("Connectez-vous pour rÃ©pondre")
       navigate("/login")
       return
     }
     
     if (!newAnswer.trim()) {
-      setError("Veuillez écrire une réponse")
+      setError("Veuillez Ã©crire une rÃ©ponse")
       return
     }
     
@@ -110,42 +110,42 @@ const QuestionDetail = () => {
       })
       
       setNewAnswer("") // Vider le champ
-      setSuccess("Votre réponse a été publiée avec succès !")
+      setSuccess("Votre rÃ©ponse a Ã©tÃ© publiÃ©e avec succÃ¨s !")
       fetchQuestion() // Recharger la question
       
-      // Cacher le message après 3 secondes
+      // Cacher le message aprÃ¨s 3 secondes
       setTimeout(() => setSuccess(""), 3000)
     } catch (error) {
-      console.error("Erreur publication réponse:", error.response?.data || error)
+      console.error("Erreur publication rÃ©ponse:", error.response?.data || error)
       setError(error.response?.data?.detail || "Erreur lors de la publication")
     } finally {
       setSubmitting(false)
     }
   }
 
-  // Supprimer une réponse (seul l'auteur ou admin peut)
+  // Supprimer une rÃ©ponse (seul l'auteur ou admin peut)
   const handleDeleteAnswer = async (answerId) => {
     if (!user) return
     
-    if (!window.confirm("Êtes-vous sûr de vouloir supprimer cette réponse ?")) {
+    if (!window.confirm("ÃŠtes-vous sÃ»r de vouloir supprimer cette rÃ©ponse ?")) {
       return
     }
     
     try {
       await api.delete(`/answers/${answerId}/`)
-      setSuccess("Réponse supprimée avec succès !")
+      setSuccess("RÃ©ponse supprimÃ©e avec succÃ¨s !")
       fetchQuestion() // Recharger
       
       setTimeout(() => setSuccess(""), 3000)
     } catch (error) {
-      console.error("Erreur suppression réponse:", error.response?.data || error)
+      console.error("Erreur suppression rÃ©ponse:", error.response?.data || error)
       setError(error.response?.data?.detail || "Erreur lors de la suppression")
     }
   }
 
-  // Éditer une réponse (seul l'auteur peut)
+  // Ã‰diter une rÃ©ponse (seul l'auteur peut)
   const handleEditAnswer = (answerId, currentContent) => {
-    const newContent = prompt("Modifiez votre réponse :", currentContent)
+    const newContent = prompt("Modifiez votre rÃ©ponse :", currentContent)
     if (newContent !== null && newContent !== currentContent) {
       updateAnswer(answerId, newContent)
     }
@@ -154,12 +154,12 @@ const QuestionDetail = () => {
   const updateAnswer = async (answerId, content) => {
     try {
       await api.put(`/answers/${answerId}/`, { content })
-      setSuccess("Réponse modifiée avec succès !")
+      setSuccess("RÃ©ponse modifiÃ©e avec succÃ¨s !")
       fetchQuestion()
       
       setTimeout(() => setSuccess(""), 3000)
     } catch (error) {
-      console.error("Erreur modification réponse:", error.response?.data || error)
+      console.error("Erreur modification rÃ©ponse:", error.response?.data || error)
       setError(error.response?.data?.detail || "Erreur lors de la modification")
     }
   }
@@ -178,15 +178,15 @@ const QuestionDetail = () => {
       <div className="max-w-4xl mx-auto px-4 text-center py-16">
         <h2 className="text-2xl font-bold text-text-primary mb-4">Question introuvable</h2>
         <Link to="/" className="text-primary hover:text-blue-700">
-          Retour à la liste des questions
+          Retour Ã  la liste des questions
         </Link>
       </div>
     )
   }
 
-  // Vérifier si l'utilisateur est l'auteur de la question
+  // VÃ©rifier si l'utilisateur est l'auteur de la question
   const isQuestionAuthor = user && user.id === question.author.id
-  // Vérifier si l'utilisateur est admin
+  // VÃ©rifier si l'utilisateur est admin
   const isAdmin = user && user.username === "admin"
 
   return (
@@ -215,7 +215,7 @@ const QuestionDetail = () => {
               className={`text-3xl p-2 ${user ? "text-gray-500 hover:text-green-600" : "text-gray-300 cursor-not-allowed"}`}
               title={user ? "Voter positivement" : "Connectez-vous pour voter"}
             >
-              ▲
+              â–²
             </button>
             
             <div className="text-3xl font-bold my-2">{question.vote_count || 0}</div>
@@ -224,9 +224,9 @@ const QuestionDetail = () => {
               onClick={() => handleQuestionVote(-1)}
               disabled={!user}
               className={`text-3xl p-2 ${user ? "text-gray-500 hover:text-red-600" : "text-gray-300 cursor-not-allowed"}`}
-              title={user ? "Voter négativement" : "Connectez-vous pour voter"}
+              title={user ? "Voter nÃ©gativement" : "Connectez-vous pour voter"}
             >
-              ▼
+              â–¼
             </button>
             
             <div className="mt-4 text-center">
@@ -241,12 +241,12 @@ const QuestionDetail = () => {
             
             <div className="flex items-center gap-4 text-sm text-text-secondary mb-6">
               <div>
-                Posé par{" "}
+                PosÃ© par{" "}
                 <Link to={`/user/${question.author.id}`} className="text-primary font-medium">
                   {question.author.username}
                 </Link>
               </div>
-              <div>•</div>
+              <div>â€¢</div>
               <div>
                 {new Date(question.created_at).toLocaleDateString("fr-FR", {
                   day: "numeric",
@@ -258,9 +258,9 @@ const QuestionDetail = () => {
               </div>
               {question.updated_at !== question.created_at && (
                 <>
-                  <div>•</div>
+                  <div>â€¢</div>
                   <div className="text-xs bg-gray-100 px-2 py-1 rounded">
-                    modifié
+                    modifiÃ©
                   </div>
                 </>
               )}
@@ -286,24 +286,24 @@ const QuestionDetail = () => {
               ))}
             </div>
 
-            {/* Actions de la question (éditer/supprimer - pour l'auteur) */}
+            {/* Actions de la question (Ã©diter/supprimer - pour l'auteur) */}
             {isQuestionAuthor && (
               <div className="flex gap-3 pt-4 border-t border-border">
                 <button
                   onClick={() => navigate(`/question/${id}/edit`)}
                   className="text-sm text-blue-600 hover:text-blue-800"
                 >
-                  ✏️ Modifier la question
+                  âœï¸ Modifier la question
                 </button>
                 <button
                   onClick={() => {
                     if (window.confirm("Supprimer cette question ?")) {
-                      // Implémentez la suppression
+                      // ImplÃ©mentez la suppression
                     }
                   }}
                   className="text-sm text-red-600 hover:text-red-800"
                 >
-                  🗑️ Supprimer
+                  ðŸ—‘ï¸ Supprimer
                 </button>
               </div>
             )}
@@ -311,25 +311,25 @@ const QuestionDetail = () => {
         </div>
       </div>
 
-      {/* Section des réponses */}
+      {/* Section des rÃ©ponses */}
       <div className="mb-10">
         <div className="flex items-center justify-between mb-6">
           <h2 className="text-2xl font-bold text-text-primary">
-            {question.answer_count || 0} Réponse{question.answer_count !== 1 ? "s" : ""}
+            {question.answer_count || 0} RÃ©ponse{question.answer_count !== 1 ? "s" : ""}
           </h2>
           
-          {/* Filtres de réponses */}
+          {/* Filtres de rÃ©ponses */}
           <div className="flex gap-2">
             <button className="text-sm px-3 py-1 border rounded hover:bg-gray-50">
-              Les plus récentes
+              Les plus rÃ©centes
             </button>
             <button className="text-sm px-3 py-1 border rounded hover:bg-gray-50">
-              Les plus votées
+              Les plus votÃ©es
             </button>
           </div>
         </div>
 
-        {/* Liste des réponses */}
+        {/* Liste des rÃ©ponses */}
         {question.answers && question.answers.length > 0 ? (
           <div className="space-y-6">
             {question.answers.map((answer) => {
@@ -347,7 +347,7 @@ const QuestionDetail = () => {
                   }`}
                 >
                   <div className="flex gap-6">
-                    {/* Colonne gauche : Votes réponse */}
+                    {/* Colonne gauche : Votes rÃ©ponse */}
                     <div className="flex flex-col items-center min-w-[80px]">
                       <button
                         onClick={() => handleAnswerVote(answer.id, 1)}
@@ -356,7 +356,7 @@ const QuestionDetail = () => {
                           user ? "text-gray-500 hover:text-green-600" : "text-gray-300 cursor-not-allowed"
                         }`}
                       >
-                        ▲
+                        â–²
                       </button>
                       
                       <div className={`text-2xl font-bold my-2 ${
@@ -373,31 +373,31 @@ const QuestionDetail = () => {
                           user ? "text-gray-500 hover:text-red-600" : "text-gray-300 cursor-not-allowed"
                         }`}
                       >
-                        ▼
+                        â–¼
                       </button>
                       
-                      {/* Bouton accepter la réponse (pour l'auteur de la question) */}
+                      {/* Bouton accepter la rÃ©ponse (pour l'auteur de la question) */}
                       {canAccept && (
                         <button
                           onClick={() => handleAcceptAnswer(answer.id)}
                           className="mt-4 text-green-600 hover:text-green-800 text-lg"
-                          title="Accepter comme meilleure réponse"
+                          title="Accepter comme meilleure rÃ©ponse"
                         >
-                          ✓
+                          âœ“
                         </button>
                       )}
                       
-                      {/* Badge meilleure réponse */}
+                      {/* Badge meilleure rÃ©ponse */}
                       {answer.is_accepted && (
                         <div className="mt-4">
                           <span className="bg-green-500 text-white px-2 py-1 rounded text-xs font-bold">
-                            ✓ MEILLEURE RÉPONSE
+                            âœ“ MEILLEURE RÃ‰PONSE
                           </span>
                         </div>
                       )}
                     </div>
 
-                    {/* Colonne droite : Contenu de la réponse */}
+                    {/* Colonne droite : Contenu de la rÃ©ponse */}
                     <div className="flex-1">
                       {/* Contenu */}
                       <div className="prose max-w-none mb-4">
@@ -406,7 +406,7 @@ const QuestionDetail = () => {
                         </ReactMarkdown>
                       </div>
 
-                      {/* Métadonnées et actions */}
+                      {/* MÃ©tadonnÃ©es et actions */}
                       <div className="flex justify-between items-center pt-4 border-t border-border">
                         <div className="flex items-center gap-3">
                           <div className="flex items-center gap-2">
@@ -417,29 +417,29 @@ const QuestionDetail = () => {
                               {answer.author.username}
                             </Link>
                             <span className="text-xs bg-gray-100 px-2 py-1 rounded">
-                              {answer.author.reputation || 0} réputation
+                              {answer.author.reputation || 0} rÃ©putation
                             </span>
                           </div>
                           <span className="text-text-secondary text-sm">
-                            • Répondu le{" "}
+                            â€¢ RÃ©pondu le{" "}
                             {new Date(answer.created_at).toLocaleDateString("fr-FR")}
                           </span>
                         </div>
 
-                        {/* Actions sur la réponse (éditer/supprimer) */}
+                        {/* Actions sur la rÃ©ponse (Ã©diter/supprimer) */}
                         {canEditOrDelete && (
                           <div className="flex gap-3">
                             <button
                               onClick={() => handleEditAnswer(answer.id, answer.content)}
                               className="text-sm text-blue-600 hover:text-blue-800"
                             >
-                              ✏️ Modifier
+                              âœï¸ Modifier
                             </button>
                             <button
                               onClick={() => handleDeleteAnswer(answer.id)}
                               className="text-sm text-red-600 hover:text-red-800"
                             >
-                              🗑️ Supprimer
+                              ðŸ—‘ï¸ Supprimer
                             </button>
                           </div>
                         )}
@@ -452,21 +452,21 @@ const QuestionDetail = () => {
           </div>
         ) : (
           <div className="bg-gray-50 border border-border rounded-lg p-8 text-center">
-            <div className="text-4xl mb-4">🤔</div>
+            <div className="text-4xl mb-4">ðŸ¤”</div>
             <h3 className="text-xl font-medium text-text-primary mb-2">
-              Aucune réponse pour l'instant
+              Aucune rÃ©ponse pour l'instant
             </h3>
             <p className="text-text-secondary">
-              Soyez le premier à répondre à cette question !
+              Soyez le premier Ã  rÃ©pondre Ã  cette question !
             </p>
           </div>
         )}
       </div>
 
-      {/* Formulaire pour répondre */}
+      {/* Formulaire pour rÃ©pondre */}
       <div className="bg-white border border-border rounded-lg p-6">
         <h3 className="text-xl font-bold text-text-primary mb-4">
-          {user ? "Votre réponse" : "Connectez-vous pour répondre"}
+          {user ? "Votre rÃ©ponse" : "Connectez-vous pour rÃ©pondre"}
         </h3>
         
         {user ? (
@@ -475,19 +475,19 @@ const QuestionDetail = () => {
               <textarea
                 value={newAnswer}
                 onChange={(e) => setNewAnswer(e.target.value)}
-                placeholder="Écrivez votre réponse ici... Vous pouvez utiliser Markdown pour formater votre texte."
+                placeholder="Ã‰crivez votre rÃ©ponse ici... Vous pouvez utiliser Markdown pour formater votre texte."
                 rows="8"
                 className="w-full px-4 py-3 border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
                 disabled={submitting}
               />
               <div className="text-sm text-text-secondary mt-2">
-                💡 Conseil: Soyez clair et précis. Utilisez des exemples de code si nécessaire.
+                ðŸ’¡ Conseil: Soyez clair et prÃ©cis. Utilisez des exemples de code si nÃ©cessaire.
               </div>
             </div>
             
             <div className="flex justify-between items-center">
               <div className="text-sm text-text-secondary">
-                Connecté en tant que <span className="font-medium">{user.username}</span>
+                ConnectÃ© en tant que <span className="font-medium">{user.username}</span>
               </div>
               
               <button
@@ -501,7 +501,7 @@ const QuestionDetail = () => {
                     Publication...
                   </>
                 ) : (
-                  "Publier la réponse"
+                  "Publier la rÃ©ponse"
                 )}
               </button>
             </div>
@@ -509,7 +509,7 @@ const QuestionDetail = () => {
         ) : (
           <div className="text-center py-6">
             <p className="text-text-secondary mb-4">
-              Vous devez être connecté pour répondre à cette question.
+              Vous devez Ãªtre connectÃ© pour rÃ©pondre Ã  cette question.
             </p>
             <div className="flex gap-4 justify-center">
               <Link
@@ -546,5 +546,6 @@ const QuestionDetail = () => {
 }
 
 export default QuestionDetail
+
 
 
