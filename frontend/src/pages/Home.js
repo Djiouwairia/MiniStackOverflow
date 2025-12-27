@@ -3,7 +3,7 @@
 import { useState, useEffect, useContext } from "react"
 import { Link } from "react-router-dom"
 import { AuthContext } from "../context/AuthContext"
-import api from "../api/axios"
+import api from "../api/axios-nuke"
 
 const Home = () => {
   const [questions, setQuestions] = useState([])
@@ -243,3 +243,4 @@ const Home = () => {
 }
 
 export default Home
+

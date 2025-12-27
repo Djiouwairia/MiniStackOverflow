@@ -3,7 +3,7 @@
 import { useState, useEffect, useContext } from "react"
 import { AuthContext } from "../context/AuthContext"
 import { Link, Navigate } from "react-router-dom"  // AJOUTEZ Navigate ici
-import api from "../api/axios"
+import api from "../api/axios-nuke"
 
 const Profile = () => {
   const { user, loading } = useContext(AuthContext)
@@ -194,3 +194,5 @@ const Profile = () => {
 }
 
 export default Profile
+
+

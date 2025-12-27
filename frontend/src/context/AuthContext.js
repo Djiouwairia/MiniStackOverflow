@@ -1,7 +1,7 @@
 "use client"
 
 import { createContext, useState, useEffect } from "react"
-import api from "../api/axios"
+import api from "../api/axios-nuke"
 
 export const AuthContext = createContext()
 
@@ -99,3 +99,5 @@ export const AuthProvider = ({ children }) => {
     </AuthContext.Provider>
   )
 }
+
+

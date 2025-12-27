@@ -3,7 +3,7 @@
 import { useState, useEffect, useContext } from "react"
 import { useNavigate } from "react-router-dom"
 import { AuthContext } from "../context/AuthContext"
-import api from "../api/axios"
+import api from "../api/axios-nuke"
 
 const AskQuestion = () => {
   const [title, setTitle] = useState("")
@@ -185,3 +185,5 @@ const AskQuestion = () => {
 }
 
 export default AskQuestion
+
+

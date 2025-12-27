@@ -3,7 +3,7 @@
 import { useState, useEffect, useContext } from "react"
 import { useNavigate } from "react-router-dom"
 import { AuthContext } from "../context/AuthContext"
-import api from "../api/axios"
+import api from "../api/axios-nuke"
 
 const AdminAnswer = () => {
   const [questions, setQuestions] = useState([])
@@ -468,3 +468,5 @@ const AdminAnswer = () => {
 }
 
 export default AdminAnswer
+
+

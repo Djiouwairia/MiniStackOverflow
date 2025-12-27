@@ -4,7 +4,7 @@ import { useState, useEffect, useContext } from "react"
 import { useParams, Link, useNavigate } from "react-router-dom"
 import ReactMarkdown from "react-markdown"
 import { AuthContext } from "../context/AuthContext"
-import api from "../api/axios"
+import api from "../api/axios-nuke"
 
 const QuestionDetail = () => {
   const { id } = useParams()
@@ -546,3 +546,5 @@ const QuestionDetail = () => {
 }
 
 export default QuestionDetail
+
+
